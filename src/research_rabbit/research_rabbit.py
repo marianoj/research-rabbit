@@ -12,9 +12,31 @@ from research_rabbit.utils import deduplicate_and_format_sources, tavily_search,
 from research_rabbit.state import SummaryState, SummaryStateInput, SummaryStateOutput
 from research_rabbit.prompts import query_writer_instructions, summarizer_instructions, reflection_instructions
 
+# Add test here
+print("Testing Ollama connection...")
+llm_test = ChatOllama(
+    model="llama3.2:latest",
+    base_url="http://localhost:11434"
+)
+
+try:
+    response = llm_test.invoke("Hello!")
+    print("Success:", response)
+except Exception as e:
+    print("Error:", e)
+    
 # LLM
-llm = ChatOllama(model=Configuration.local_llm, temperature=0)
-llm_json_mode = ChatOllama(model=Configuration.local_llm, temperature=0, format="json")
+llm = ChatOllama(
+    model=Configuration.local_llm, 
+    temperature=0,
+    base_url="http://host.docker.internal:11434"
+)
+llm_json_mode = ChatOllama(
+    model=Configuration.local_llm, 
+    temperature=0, 
+    format="json",
+    base_url="http://host.docker.internal:11434"
+)
 
 # Nodes   
 def generate_query(state: SummaryState):
